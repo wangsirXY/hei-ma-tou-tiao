@@ -8,7 +8,10 @@ import store from './store'
 import 'amfe-flexible'
 // 导入vant组件库
 import Vant from 'vant'
-import 'vant/lib/index.css'
+import 'vant/lib/index.less'
+
+// 导入全局样式表
+// import './index.less'
 
 Vue.use(Vant)
 
