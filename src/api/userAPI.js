@@ -9,3 +9,11 @@ import request from '../utils/request'
 export const loginAPI = (data) => {
   return request.post('/v1_0/authorizations', data)
 }
+
+/**
+ * 请求用户频道列表数据的 API
+ * @returns Promise
+ */
+export const getUserChannelAPI = () => {
+  return request.get('/v1_0/user/channels')
+}
