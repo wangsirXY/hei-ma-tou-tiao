@@ -27,7 +27,7 @@
 
 <script>
 // 频道管理列表
-import { getUserChannelAPI } from '@/api/userAPI'
+import { getUserChannelAPI } from '@/api/homeAPI'
 
 // 文章列表组件
 import ArticleList from '@/components/ArticleList'
