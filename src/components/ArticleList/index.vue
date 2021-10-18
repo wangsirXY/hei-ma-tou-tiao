@@ -1,15 +1,17 @@
 <template>
   <div id="ArticleList">
-    <!-- 上拉加载更多 -->
-    <van-list
-      v-model="loading"
-      :finished="finished"
-      :immediate-check="false"
-      finished-text="没有更多资讯了"
-      @load="onLoad">
-      <!-- 循环渲染文章的列表 -->
-      <artItem v-for="item in articleList" :key="item.art_id" :articleList="item"></artItem>
-    </van-list>
+    <van-pull-refresh v-model="isLoading" success-text="刷新成功" @refresh="onRefresh">
+      <!-- 上拉加载更多 -->
+      <van-list
+        v-model="loading"
+        :finished="finished"
+        :immediate-check="false"
+        finished-text="没有更多资讯了"
+        @load="onLoad">
+        <!-- 循环渲染文章的列表 -->
+        <artItem v-for="item in articleList" :key="item.art_id.toString()" :articleList="item" @remove-article="removeArticle"></artItem>
+      </van-list>
+    </van-pull-refresh>
 
   </div>
 </template>
@@ -32,7 +34,9 @@ export default {
       articleList: [],
       preTimestamp: '',
       loading: false,
-      finished: false
+      finished: false,
+      // 是否正在进行下拉刷新的请求
+      isLoading: false
     }
   },
   methods: {
@@ -64,12 +68,27 @@ export default {
           this.finished = true
         }
       }
-
       console.log(res, '新的res数据')
     },
     onLoad() {
       console.log('触发了上拉加载更多')
       this.initArtList()
+    },
+    onRefresh() {
+      setTimeout(() => {
+        // Toast('刷新成功')
+        this.isLoading = false
+      }, 1000)
+    },
+    // 从文章列表中移除指定 id 的文章
+    removeArticle(id) {
+      // 对原数组进行 filter 方法的过滤
+      this.articleList = this.articleList.filter(item => item.art_id.toString() !== id)
+      // 判断剩余数据的文章数量是否小于 10
+      if (this.articleList.length < 10) {
+        // 主动请求下一页的数据
+        this.initArtList()
+      }
     }
   },
   created() {

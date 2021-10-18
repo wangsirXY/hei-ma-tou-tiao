@@ -5,7 +5,7 @@ import store from './store'
 
 import 'amfe-flexible'
 
-import Vant from 'vant'
+import Vant, { Lazyload } from 'vant'
 import 'vant/lib/index.less'
 
 // 导入 dayjs 的核心模块
@@ -29,6 +29,13 @@ Vue.filter('dateFormat', dt => {
 
 Vue.config.productionTip = false
 Vue.use(Vant)
+
+// 按需导入懒加载
+Vue.use(Lazyload)
+// 注册时可以配置额外的选项
+Vue.use(Lazyload, {
+  lazyComponent: true
+})
 
 new Vue({
   router,

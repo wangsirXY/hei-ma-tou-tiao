@@ -20,3 +20,14 @@ export const getArticleListAPI = (id, time) => {
     }
   })
 }
+
+/**
+ * 将文章设置为不感兴趣（形参 id 是文章的 id）
+ * @param {*} id ID
+ * @returns Promise
+ */
+export const dislikeArticleAPI = id => {
+  return request.post('/v1_0/article/dislikes', {
+    target: id
+  })
+}
