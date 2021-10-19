@@ -24,14 +24,15 @@
         </div>
       </template>
     </van-cell>
-    <van-action-sheet v-model="show" cancel-text="取消" :closeable="false" get-container="body">
+    <!-- 反馈操作面板 -->
+    <van-action-sheet v-model="show" cancel-text="取消" :closeable="false" @closed="isFirst = true" get-container="body">
       <!-- 第一级反馈面板 -->
       <div v-if="isFirst">
         <van-cell :title="item.name" clickable class="center-title" v-for="item in actions" :key="item.name" @click="onCellClick(item.name)" />
       </div>
       <!-- 第二级反馈面板 -->
       <div v-else>
-        <van-cell :title="item.label" clickable title-class="center-title" v-for="item in reports" :key="item.type" />
+        <van-cell :title="item.label" clickable title-class="center-title" v-for="item in reports" :key="item.type" @click="reportArticle(item.type)" />
         <van-cell title="返回" clickable title-class="center-title" @click="isFirst = true" />
       </div>
     </van-action-sheet>
@@ -41,7 +42,7 @@
 <script>
 import reports from '@/api/reports'
 // 按需导入 API 接口
-import { dislikeArticleAPI } from '@/api/homeAPI'
+import { dislikeArticleAPI, reportArticleAPI } from '@/api/homeAPI'
 
 export default {
   name: 'ArtItem',
@@ -74,23 +75,32 @@ export default {
     async onCellClick(name) {
       // 调用 API 接口，将文章设置为不感兴趣
       if (name === '不感兴趣') {
-        const { data: res } = await dislikeArticleAPI(this.artId)
+        const { data: res } = await dislikeArticleAPI(this.article.art_id)
         if (res.message === 'OK') {
-          this.$emit('remove-article', this.artId)
+          this.$emit('remove-article', this.article.art_id)
         }
         this.show = false
-      } else if (name === '拉黑作者') {
+      }
+      if (name === '拉黑作者') {
         this.show = false
-      } else if (name === '反馈垃圾内容') {
+      }
+      if (name === '反馈垃圾内容') {
         this.isFirst = false
       }
+    },
+    async reportArticle(type) {
+      const { data: res } = await reportArticleAPI(this.article.art_id, type)
+      if (res.message === 'OK') {
+        this.$emit('remove-article', this.article.art_id)
+      }
+      this.show = false
     }
   },
   computed: {
     // 文章 Id 的计算属性
-    artId() {
-      return this.article.artId.toString()
-    }
+    // artId() {
+    //   return this.article.art_id
+    // }
   },
   props: {
     articleList: {

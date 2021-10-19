@@ -23,11 +23,24 @@ export const getArticleListAPI = (id, time) => {
 
 /**
  * 将文章设置为不感兴趣（形参 id 是文章的 id）
- * @param {*} id ID
+ * @param {*} id 文章ID
  * @returns Promise
  */
-export const dislikeArticleAPI = id => {
+export const dislikeArticleAPI = (id) => {
   return request.post('/v1_0/article/dislikes', {
     target: id
+  })
+}
+
+/**
+ * 举报文章内容
+ * @param {String | Number} target 文章ID
+ * @param {Number} type 文章类型
+ * @returns Promise
+ */
+export const reportArticleAPI = (target, type) => {
+  return request.post('/v1_0/article/reports', {
+    target, // 文章的 Id
+    type // 举报的类型
   })
 }

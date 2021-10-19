@@ -9,7 +9,7 @@
         finished-text="没有更多资讯了"
         @load="onLoad">
         <!-- 循环渲染文章的列表 -->
-        <artItem v-for="item in articleList" :key="item.art_id.toString()" :articleList="item" @remove-article="removeArticle"></artItem>
+        <artItem v-for="item in articleList" :key="item.art_id" :articleList="item" @remove-article="removeArticle"></artItem>
       </van-list>
     </van-pull-refresh>
 
@@ -83,7 +83,7 @@ export default {
     // 从文章列表中移除指定 id 的文章
     removeArticle(id) {
       // 对原数组进行 filter 方法的过滤
-      this.articleList = this.articleList.filter(item => item.art_id.toString() !== id)
+      this.articleList = this.articleList.filter(item => item.art_id !== id)
       // 判断剩余数据的文章数量是否小于 10
       if (this.articleList.length < 10) {
         // 主动请求下一页的数据
