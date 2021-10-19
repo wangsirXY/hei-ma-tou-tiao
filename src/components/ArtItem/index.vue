@@ -5,19 +5,19 @@
       <template #title>
         <div class="title-box">
           <!-- 标题 -->
-          <span>{{ articleList.title }}</span>
+          <span>{{ article.title }}</span>
           <!-- 单张图片 -->
-          <img v-if="articleList.cover.type == 1" v-lazy="articleList.cover.images[0]" class="thumb">
+          <img v-if="article.cover.type == 1" v-lazy="article.cover.images[0]" class="thumb">
         </div>
         <!-- 三张图片 -->
-        <div class="thumb-box" v-if="articleList.cover.type == 3" >
-          <img v-for="(imgsrc, i) in articleList.cover.images" :key="i" v-lazy="imgsrc" class="thumb">
+        <div class="thumb-box" v-if="article.cover.type == 3" >
+          <img v-for="(imgsrc, i) in article.cover.images" :key="i" v-lazy="imgsrc" class="thumb">
         </div>
       </template>
       <!-- label 区域的插槽 -->
       <template #label>
         <div class="label-box">
-          <span>作者 {{ articleList.aut_name }}&nbsp;&nbsp; {{ articleList.comm_count }} 评论 &nbsp;&nbsp; 发布日期 {{ articleList.pubdate | dateFormat }}</span>
+          <span>作者 {{ article.aut_name }}&nbsp;&nbsp; {{ article.comm_count }} 评论 &nbsp;&nbsp; 发布日期 {{ article.pubdate | dateFormat }}</span>
           <!-- 关闭按钮 -->
           <!-- 通过 .stop 事件修饰符，阻止点击事件的冒泡 -->
           <van-icon name="cross" @click.stop="show = true" />
@@ -42,7 +42,7 @@
 <script>
 import reports from '@/api/reports'
 // 按需导入 API 接口
-import { dislikeArticleAPI, reportArticleAPI } from '@/api/homeAPI'
+import { dislikeArticleAPI, getArticleListAPI } from '@/api/homeAPI'
 
 export default {
   name: 'ArtItem',
@@ -59,12 +59,18 @@ export default {
       // 是否展示第一个反馈面板
       isFirst: true,
       // 第二个面板的可选项列表：{ type, label }
-      reports,
+      reports
       // 文章的信息对象
-      article: {
-        type: Object, // 数据类型
-        required: true // 必填项
-      }
+      // article: {
+      //   type: Object, // 数据类型
+      //   required: true // 必填项
+      // }
+    }
+  },
+  props: {
+    article: {
+      type: Object,
+      required: true
     }
   },
   methods: {
@@ -89,7 +95,8 @@ export default {
       }
     },
     async reportArticle(type) {
-      const { data: res } = await reportArticleAPI(this.article.art_id, type)
+      const { data: res } = await getArticleListAPI(this.article.art_id, type)
+      console.log(res, 'res')
       if (res.message === 'OK') {
         this.$emit('remove-article', this.article.art_id)
       }
@@ -102,11 +109,8 @@ export default {
     //   return this.article.art_id
     // }
   },
-  props: {
-    articleList: {
-      type: Object,
-      required: true
-    }
+  created() {
+    console.log(this.article)
   }
 }
 </script>

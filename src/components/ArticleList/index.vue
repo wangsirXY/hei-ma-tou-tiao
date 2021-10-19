@@ -9,7 +9,7 @@
         finished-text="没有更多资讯了"
         @load="onLoad">
         <!-- 循环渲染文章的列表 -->
-        <artItem v-for="item in articleList" :key="item.art_id" :articleList="item" @remove-article="removeArticle"></artItem>
+        <artItem v-for="item in articleList" :key="item.art_id" :article="item" @remove-article="removeArticle"></artItem>
       </van-list>
     </van-pull-refresh>
 
