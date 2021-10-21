@@ -60,11 +60,6 @@ export default {
       isFirst: true,
       // 第二个面板的可选项列表：{ type, label }
       reports
-      // 文章的信息对象
-      // article: {
-      //   type: Object, // 数据类型
-      //   required: true // 必填项
-      // }
     }
   },
   props: {
