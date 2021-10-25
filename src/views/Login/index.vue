@@ -58,8 +58,8 @@ export default {
       if (res.message === 'OK') {
         console.log(res.data)
         this.updateTokenInfo(res.data)
-        const url = window.location.hash.split('?')[1].split('=')[1]
-        this.$router.push('/' + url)
+        // this.$router.push('/' + window.location.hash.split('?')[1].split('=')[1])
+        this.$router.push('/')
       }
     }
   }

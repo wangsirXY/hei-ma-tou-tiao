@@ -44,3 +44,22 @@ export const reportArticleAPI = (target, type) => {
     type // 举报的类型
   })
 }
+
+/**
+ * 获取所有频道数据的 API
+ * @returns Promise
+ */
+export const getAllChannelAPI = () => {
+  return request.get('/v1_0/channels')
+}
+
+/**
+ * 更新用户频道列表数据的 API
+ * @param { Array<Object> } channels [ {id, seq} ]
+ * @returns Promise
+ */
+export const updateUserChannelAPI = channels => {
+  return request.put('/v1_0/user/channels', {
+    channels
+  })
+}

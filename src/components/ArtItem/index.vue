@@ -91,21 +91,16 @@ export default {
     },
     async reportArticle(type) {
       const { data: res } = await getArticleListAPI(this.article.art_id, type)
-      console.log(res, 'res')
+      // console.log(res, 'res')
       if (res.message === 'OK') {
         this.$emit('remove-article', this.article.art_id)
       }
       this.show = false
     }
   },
-  computed: {
-    // 文章 Id 的计算属性
-    // artId() {
-    //   return this.article.art_id
-    // }
-  },
+  computed: {},
   created() {
-    console.log(this.article)
+    // console.log(this.article)
   }
 }
 </script>

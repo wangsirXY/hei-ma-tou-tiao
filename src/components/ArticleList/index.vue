@@ -48,7 +48,7 @@ export default {
         this.articleList = res.data.results
       }
 
-      console.log(res, 'res')
+      // console.log(res, 'res')
     },
     // 初始化文章的列表数据
     async initArtList() {
@@ -68,7 +68,7 @@ export default {
           this.finished = true
         }
       }
-      console.log(res, '新的res数据')
+      // // console.log(res, '新的res数据')
     },
     onLoad() {
       console.log('触发了上拉加载更多')
