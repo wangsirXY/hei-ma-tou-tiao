@@ -5,7 +5,7 @@
       <!-- 后退图标 -->
       <van-icon name="arrow-left" color="white" size="18" class="goback" @click="$router.back()" />
       <!-- 搜索组件 -->
-      <van-search v-model.trim="kw" placeholder="请输入搜索关键词" background="#007BFF" shape="round" @keyup="onInput" />
+      <van-search v-model.trim="kw" placeholder="请输入搜索关键词" background="#007BFF" shape="round" @click="onInput" />
     </div>
 
     <!-- 搜索建议 -->
