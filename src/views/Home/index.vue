@@ -8,7 +8,7 @@
       </template>
       <!-- 右侧的插槽 -->
       <template #right>
-        <van-icon name="search" color="white" size="18" />
+        <van-icon name="search" color="white" size="18" @click="$router.push('/search')" />
       </template>
     </van-nav-bar>
 
@@ -43,9 +43,9 @@
               </div>
               <!-- 我的频道列表 -->
               <van-row type="flex">
-                <van-col span="6" v-for="item in userCannel" :key="item.id">
+                <van-col span="6" v-for="(item, index) in userCannel" :key="item.id">
                   <!-- 用户的频道 Item 项 -->
-                  <div class="channel-item van-hairline--surround" @click="delChannel(item)"> {{ item.name }}
+                  <div class="channel-item van-hairline--surround" @click="onUserChannelClick(item, index)"> {{ item.name }}
                     <!-- 删除图标 -->
                     <van-badge color="transparent" class="cross-badge" v-if="isDel && item.name !== '推荐' && userCannel.length > 2">
                       <template #content>
@@ -155,14 +155,18 @@ export default {
         this.$notify({ type: 'success', message: '更新成功', duration: 1000 })
       }
     },
-    // 移除频道
-    delChannel(data) {
+    // 0移除频道 切换到到点击的列表
+    onUserChannelClick(data, index) {
       if (this.isDel && data.name !== '推荐' && this.userCannel.length > 2) {
         // 过滤掉当前的频道
         this.userCannel = this.userCannel.filter(item => item.id !== data.id)
 
         // 调用 updateChannel 方法，把最新的频道列表数据提交到后端保存
         this.updateChannel()
+      } else {
+        // 不编辑时，点击频道跳转到当前频道
+        this.active = index
+        this.show = false
       }
     }
   },
