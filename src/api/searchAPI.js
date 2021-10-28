@@ -13,3 +13,18 @@ export const getSuggestListAPI = kw => {
     }
   })
 }
+
+/**
+ * 搜索文章数据
+ * @param { String } kw 关键字
+ * @param { Number } page 页码
+ * @returns Array
+ */
+export const getSearchResultAPI = (kw, page) => {
+  return request.get('/v1_0/search', {
+    params: {
+      q: kw,
+      page
+    }
+  })
+}

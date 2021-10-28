@@ -101,7 +101,7 @@ export default {
     },
     // 跳转到搜索结果页
     gotoSearchResult(e) {
-      this.$router.push('/search/' + e.currentTarget.innerText)
+      this.$router.push('/search/' + e.target.innerText)
     }
   },
   watch: {

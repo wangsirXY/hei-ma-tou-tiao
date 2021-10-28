@@ -20,7 +20,7 @@
           <span>作者 {{ article.aut_name }}&nbsp;&nbsp; {{ article.comm_count }} 评论 &nbsp;&nbsp; 发布日期 {{ article.pubdate | dateFormat }}</span>
           <!-- 关闭按钮 -->
           <!-- 通过 .stop 事件修饰符，阻止点击事件的冒泡 -->
-          <van-icon name="cross" @click.stop="show = true" />
+          <van-icon name="cross" @click.stop="show = true" v-if="closable" />
         </div>
       </template>
     </van-cell>
@@ -66,6 +66,12 @@ export default {
     article: {
       type: Object,
       required: true
+    },
+    // 是否展示关闭按钮
+    closable: {
+      type: Boolean,
+      // 默认值为 true，表示展示关闭按钮
+      default: true
     }
   },
   methods: {
@@ -98,7 +104,6 @@ export default {
       this.show = false
     }
   },
-  computed: {},
   created() {
     // console.log(this.article)
   }
