@@ -2,7 +2,7 @@
 
 > hei-ma-tou-tiao：商城项目。
 
-## 项目工作组
+## 安装依赖项
 ```
 yarn install
 ```
@@ -12,7 +12,7 @@ yarn install
 yarn serve
 ```
 
-### 编译和最小化产品
+### 编译和打包
 ```
 yarn build
 ```
@@ -34,6 +34,7 @@ yarn lint
 - master：主分支
 - login：登录分支
 - home：主页分支
+- search：搜索分支
 
 
 
