@@ -69,6 +69,26 @@ export const getCmtListAPI = (artId, offset) => {
 }
 
 /**
+ * 评论点赞的 API
+ * @param { String } cmtId 评论ID
+ * @returns
+ */
+export const addLikeCmtAPI = cmtId => {
+  return request.post('/v1_0/comment/likings', {
+    target: cmtId
+  })
+}
+
+/**
+ * 评论取消点赞的 API
+ * @param { String } cmtId 评论ID
+ * @returns
+ */
+export const delLikeCmtAPI = cmtId => {
+  return request.delete(`/v1_0/comment/likings/${cmtId}`)
+}
+
+/**
  * 发表评论的 API（形参中的 artId 是文章的 id；content 是评论的内容）
  * @param { String } artId 评论ID
  * @param { String } content 评论内容

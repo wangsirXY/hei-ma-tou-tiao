@@ -12,9 +12,9 @@
             <span class="uname">{{ item.aut_name }}</span>
           </div>
           <!-- 头部右侧 -->
-          <div class="cmt-header-right" @click="item.is_liking = !item.is_liking">
-            <van-icon name="like" size="16" color="red" v-if="item.is_liking"/>
-            <van-icon name="like-o" size="16" color="gray" v-else/>
+          <div class="cmt-header-right">
+            <van-icon name="like" size="16" color="red" v-if="item.is_liking" @click="delLike(item)" />
+            <van-icon name="like-o" size="16" color="gray" v-else @click="addLike(item)"/>
           </div>
         </div>
         <!-- 主体区域 -->
@@ -25,28 +25,28 @@
     </van-list>
 
     <!-- 底部添加评论区域 - 1 -->
-    <div class="add-cmt-box van-hairline--top" v-if="isShowBox1" :class="isShowBox1 ? 'art-cmt-container-1' : 'art-cmt-container-2'">
+    <div class="add-cmt-box van-hairline--top" v-if="isShowBox1">
       <van-icon name="arrow-left" size="18" @click="$router.back()" />
       <div class="ipt-cmt-div" @click="showBox2">发表评论</div>
       <div class="icon-box">
         <van-badge :content="cmtCount" :max="99">
           <van-icon name="comment-o" size="20" @click="scrollToCmtList" />
         </van-badge>
-        <van-icon name="star-o" size="20" />
+        <van-icon :name="isStar ? 'star' : 'star-o'" size="20" @click="isStar = !isStar" />
         <van-icon name="share-o" size="20" />
       </div>
     </div>
 
     <!-- 底部添加评论区域 - 2 -->
-    <div class="cmt-box van-hairline--top" v-else :class="isShowBox1 ? 'art-cmt-container-1' : 'art-cmt-container-2'">
+    <div class="cmt-box van-hairline--top" v-else>
       <textarea placeholder="友善评论、理性发言、阳光心灵" ref="iptCmt" @blur="isShowBox1 = true" v-model.trim="cmt"></textarea>
-      <van-button type="default" :disabled="cmt.length === 0" @click="pubCmt">发布</van-button>
+      <van-button type="default" :disabled="cmt.length === 0" @blur="hideBox2" @click="pubCmt">发布</van-button>
     </div>
   </div>
 </template>
 
 <script>
-import { getCmtListAPI, pubCommentAPI } from '@/api/articleAPI.js'
+import { getCmtListAPI, pubCommentAPI, addLikeCmtAPI, delLikeCmtAPI } from '@/api/articleAPI.js'
 // 从 popmotion 中按需导入 animate 动画函数
 import { animate } from 'popmotion'
 
@@ -74,7 +74,9 @@ export default {
       // 是否展示评论区域1（如果值为 true 则展示评论区域1；如果值为 false 则展示评论区域2）
       isShowBox1: true,
       // 用户填写的评论内容
-      cmt: ''
+      cmt: '',
+      // 评论收藏
+      isStar: false
     }
   },
   methods: {
@@ -98,24 +100,50 @@ export default {
         }
       }
     },
+    // 评论点赞
+    async addLike(cmt) {
+      // 1. 调用 API 接口
+      const { data: res } = await addLikeCmtAPI(cmt.com_id.toString())
+
+      if (res.message === 'OK') {
+        // 2. 在客户端，将点赞的状态设置为 true
+        cmt.is_liking = true
+      }
+    },
+    // 评论取消点赞
+    async delLike(cmt) {
+      // 1. 调用 API 接口（注意：由于取消点赞的 API 没有响应体，不需要进行解构赋值）
+      const res = await delLikeCmtAPI(cmt.com_id.toString())
+
+      if (res.status === 204) {
+        // 2. 在客户端，将点赞的状态设置为 false
+        cmt.is_liking = false
+      }
+    },
     onLoad() {
       this.initCmtList()
     },
     // 展示第二个评论区域
     showBox2() {
-      // 隐藏评论区域1，展示评论区域2
       this.isShowBox1 = false
 
-      // 1. 将回调函数延迟到下次 DOM 更新完毕之后执行
+      // 将回调函数延迟到下次 DOM 更新完毕之后执行
       this.$nextTick(() => {
-        // 2. 通过 ref 获取到 textarea 的引用
+        // 通过 ref 获取到 textarea 的引用
         this.$refs.iptCmt.focus()
       })
     },
-    // 点击了发布评论的按钮
+    // 隐藏第二个评论区域
+    hideBox2() {
+      setTimeout(() => {
+        this.isShowBox1 = true
+        this.cmt = ''
+      }, 100)
+    },
+    // 发布评论
     async pubCmt() {
-      // 调用 API 接口
       const { data: res } = await pubCommentAPI(this.artId, this.cmt)
+
       if (res.message === 'OK') {
         this.cmtCount += 1
         // 动态给响应回来的数据添加 is_liking 属性
@@ -189,12 +217,14 @@ export default {
 }
 // 外层容器
 .art-cmt-container-1 {
-  margin-bottom: 50px;
-  // padding-bottom: 100px;
+  padding-bottom: 46px;
 }
 .art-cmt-container-2 {
+  padding-bottom: 80px;
+}
+// 新增属性，下边距
+.van-hairline--top {
   margin-bottom: 50px;
-  // padding-bottom: 80px;
 }
 
 // 发布评论的盒子 - 1

@@ -54,6 +54,10 @@ export default {
     id: {
       type: String,
       require: true
+    },
+    comm_count: {
+      type: String,
+      require: true
     }
   },
   data() {
