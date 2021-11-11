@@ -9,6 +9,7 @@ import User from '@/views/User'
 import Search from '@/views/Search/Search'
 import SearchResult from '@/views/SearchResult/SearchResult'
 import ArticleDetail from '@/views/ArticleDetail'
+import UserEdit from '@/views/UserEdit'
 
 Vue.use(VueRouter)
 
@@ -31,6 +32,11 @@ const routes = [
         path: '/user',
         component: User,
         name: 'user'
+      },
+      {
+        path: '/user/edit',
+        component: UserEdit,
+        name: 'userEdit'
       },
       {
         path: '/search',
